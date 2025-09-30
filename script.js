@@ -1,6 +1,7 @@
 let hours = 0, minutes = 0, seconds = 0;
 let timerInterval;
 const beep = document.getElementById('beep');
+let soundEnabled = false;
 
 function updateDisplay() {
     document.getElementById('hours').textContent = String(hours).padStart(2,'0');
@@ -15,6 +16,7 @@ function startTimer() {
     let inputS = parseInt(document.getElementById('input-seconds').value) || 0;
     hours = inputH; minutes = inputM; seconds = inputS;
     updateDisplay();
+
     timerInterval = setInterval(() => {
         if(hours === 0 && minutes === 0 && seconds === 0){
             clearInterval(timerInterval);
@@ -22,11 +24,11 @@ function startTimer() {
         }
         if(seconds === 0){
             if(minutes === 0){
-                if(hours > 0){
-                    hours--; minutes = 59; seconds = 59;
-                }
+                if(hours > 0){ hours--; minutes = 59; seconds = 59; }
             } else { minutes--; seconds = 59; }
         } else { seconds--; }
+
+        // Beep negli ultimi 5 secondi
         if(hours === 0 && minutes === 0 && seconds <= 5 && seconds > 0){
             beep.play().catch(e => console.log(e));
         }
@@ -34,7 +36,15 @@ function startTimer() {
     },1000);
 }
 
-document.getElementById('start-btn').addEventListener('click', startTimer);
+// Evento click Start che sblocca l'audio
+document.getElementById('start-btn').addEventListener('click', () => {
+    if(!soundEnabled){
+        beep.play().then(() => { beep.pause(); beep.currentTime = 0; });
+        soundEnabled = true;
+    }
+    startTimer();
+});
+
 document.getElementById('stop-btn').addEventListener('click', () => { clearInterval(timerInterval); });
 document.getElementById('reset-btn').addEventListener('click', () => {
     clearInterval(timerInterval);
