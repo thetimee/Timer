@@ -9,6 +9,19 @@ function updateDisplay() {
     document.getElementById('seconds').textContent = String(seconds).padStart(2,'0');
 }
 
+function playBeep(times=1, interval=300){
+    let count = 0;
+    function beepOnce(){
+        beep.currentTime = 0;
+        beep.play().catch(e => console.log(e));
+        count++;
+        if(count < times){
+            setTimeout(beepOnce, interval);
+        }
+    }
+    beepOnce();
+}
+
 function startTimer() {
     if(timerInterval) clearInterval(timerInterval);
     let inputH = parseInt(document.getElementById('input-hours').value) || 0;
@@ -20,34 +33,12 @@ function startTimer() {
     timerInterval = setInterval(() => {
         if(hours === 0 && minutes === 0 && seconds === 0){
             clearInterval(timerInterval);
+            // Beep 3 volte a zero
+            playBeep(3, 300);
             return;
         }
+
         if(seconds === 0){
             if(minutes === 0){
                 if(hours > 0){ hours--; minutes = 59; seconds = 59; }
-            } else { minutes--; seconds = 59; }
-        } else { seconds--; }
-
-        // Beep negli ultimi 5 secondi
-        if(hours === 0 && minutes === 0 && seconds <= 5 && seconds > 0){
-            beep.play().catch(e => console.log(e));
-        }
-        updateDisplay();
-    },1000);
-}
-
-// Evento click Start che sblocca l'audio
-document.getElementById('start-btn').addEventListener('click', () => {
-    if(!soundEnabled){
-        beep.play().then(() => { beep.pause(); beep.currentTime = 0; });
-        soundEnabled = true;
-    }
-    startTimer();
-});
-
-document.getElementById('stop-btn').addEventListener('click', () => { clearInterval(timerInterval); });
-document.getElementById('reset-btn').addEventListener('click', () => {
-    clearInterval(timerInterval);
-    hours=0; minutes=0; seconds=0;
-    updateDisplay();
-});
+            } else { minutes--;
