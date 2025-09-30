@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timer</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        background-color: #000;
+        color: #fff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+    }
+    .language-select {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: #222;
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .container {
+        text-align: center;
+        margin-top: -50px;
+    }
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 50px;
+    }
+    .timer-display {
+        font-size: 5em;
+        margin-bottom: 30px;
+    }
+    .controls {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .controls input {
+        width: 70px;
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        text-align: center;
+        font-size: 1em;
+    }
+    .controls button {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        background-color: #222;
+        color: #fff;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .controls button:hover {
+        background-color: #555;
+    }
+</style>
+</head>
+<body>
+<select class="language-select" id="language-select">
+    <option value="en">English</option>
+    <option value="it">Italiano</option>
+    <option value="es">Español</option>
+</select>
+<div class="container">
+    <h1>Simple countdown timer for everything you need!</h1>
+    <div class="timer-display">
+        <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+    </div>
+    <div class="controls">
+        <input type="number" id="input-hours" placeholder="Hours">
+        <input type="number" id="input-minutes" placeholder="Minutes">
+        <input type="number" id="input-seconds" placeholder="Seconds">
+        <button id="start-btn">Start</button>
+        <button id="stop-btn">Stop</button>
+        <button id="reset-btn">Reset</button>
+    </div>
+</div>
+<audio id="beep" src="beep.mp3" preload="auto"></audio>
+<script src="script.js"></script>
+</body>
+</html>
